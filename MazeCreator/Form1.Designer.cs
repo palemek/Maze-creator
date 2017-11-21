@@ -43,8 +43,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.backGroundColorControl = new System.Windows.Forms.Button();
+            this.mazeColorControl = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -170,28 +170,28 @@
             this.textBox3.Text = "12";
             this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
-            // button4
+            // backGroundColorControl
             // 
-            this.button4.BackColor = System.Drawing.Color.White;
-            this.button4.Location = new System.Drawing.Point(694, 70);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(102, 23);
-            this.button4.TabIndex = 15;
-            this.button4.Text = "background Color";
-            this.button4.UseVisualStyleBackColor = false;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.backGroundColorControl.BackColor = System.Drawing.Color.White;
+            this.backGroundColorControl.Location = new System.Drawing.Point(694, 70);
+            this.backGroundColorControl.Name = "backGroundColorControl";
+            this.backGroundColorControl.Size = new System.Drawing.Size(102, 23);
+            this.backGroundColorControl.TabIndex = 15;
+            this.backGroundColorControl.Text = "background Color";
+            this.backGroundColorControl.UseVisualStyleBackColor = false;
+            this.backGroundColorControl.Click += new System.EventHandler(this.backgroundColoorControl_Click);
             // 
-            // button5
+            // mazeColorControl
             // 
-            this.button5.BackColor = System.Drawing.Color.Black;
-            this.button5.ForeColor = System.Drawing.Color.White;
-            this.button5.Location = new System.Drawing.Point(814, 70);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(102, 23);
-            this.button5.TabIndex = 16;
-            this.button5.Text = "maze Color";
-            this.button5.UseVisualStyleBackColor = false;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.mazeColorControl.BackColor = System.Drawing.Color.Black;
+            this.mazeColorControl.ForeColor = System.Drawing.Color.White;
+            this.mazeColorControl.Location = new System.Drawing.Point(814, 70);
+            this.mazeColorControl.Name = "mazeColorControl";
+            this.mazeColorControl.Size = new System.Drawing.Size(102, 23);
+            this.mazeColorControl.TabIndex = 16;
+            this.mazeColorControl.Text = "maze Color";
+            this.mazeColorControl.UseVisualStyleBackColor = false;
+            this.mazeColorControl.Click += new System.EventHandler(this.mazeColorControl_Click);
             // 
             // Form1
             // 
@@ -199,9 +199,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1277, 684);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
+            this.ClientSize = new System.Drawing.Size(1294, 684);
+            this.Controls.Add(this.mazeColorControl);
+            this.Controls.Add(this.backGroundColorControl);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox3);
             this.Controls.Add(this.button1);
@@ -218,7 +218,6 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -242,8 +241,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.ColorDialog colorDialog1;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button backGroundColorControl;
+        private System.Windows.Forms.Button mazeColorControl;
     }
 }
 

@@ -23,7 +23,7 @@ namespace MazeCreator
         }
     }
 
-    class P
+    public class P
     {
         public static List<List<List<P>>> grid = new List<List<List<P>>>();
         static Random rnd = new Random();
@@ -55,6 +55,7 @@ namespace MazeCreator
                             dy += pixcoldif / l;
                     }
                 }
+
             dx = dx / (2 * blur * (2 * blur + 1));
             dy = dy / (2 * blur * (2 * blur + 1));
 
@@ -153,7 +154,7 @@ namespace MazeCreator
             return false;
         }
 
-        public List<List<double>> possiblePoints(double _stepLength, int _mazeSize, int _margin, Bitmap _pic)//robie to teraz tak na pale, dla kazdego przypadku oddzielnie
+        public List<List<double>> possiblePoints(double _stepLength, int _mazeXsize, int _mazeYsize, int _margin, Bitmap _pic)//robie to teraz tak na pale, dla kazdego przypadku oddzielnie
         {
             List<List<double>> temp = new List<List<double>>();
 
@@ -170,8 +171,8 @@ namespace MazeCreator
             {
                 if (curr[0] > _margin &&
                     curr[1] > _margin &&
-                    curr[0] < _mazeSize - _margin &&
-                    curr[1] < _mazeSize - _margin)
+                    curr[0] < _mazeXsize - _margin &&
+                    curr[1] < _mazeYsize - _margin)
                 {
                     if (!areToClose(curr, _stepLength, _pic)) //!!!!!!!!!!!!!!!
                         temp.Add(new List<double>(curr));
@@ -180,7 +181,7 @@ namespace MazeCreator
             return temp;
         }
 
-        public static bool goFucker(ref List<P> _lista, int _mazeSize, double _minstep ,double _maxstep, int _margin)
+        public static bool goFucker(ref List<P> _lista, int _mazeXsize, int _mazeYsize, double _minstep ,double _maxstep, int _margin)
         {
             P curr = _lista.Last();
 
@@ -188,7 +189,7 @@ namespace MazeCreator
 
             double currMargin = _minstep + (_maxstep - _minstep) * ders;
 
-            List <List<double>> poss = curr.possiblePoints(currMargin, _mazeSize, _margin, Form1.pic);
+            List <List<double>> poss = curr.possiblePoints(currMargin, _mazeXsize, _mazeYsize, _margin, Form1.pic);
             int pC = poss.Count;
             if (pC == 0)
             {
@@ -207,28 +208,40 @@ namespace MazeCreator
         }
     }
     //not used yet but should be
-    class Maze
+    public class Maze
     {
         Bitmap picture;
-        int mazeSize;
+        //int mazeSize;                 //MAZESIZE
+
+        int mazeXsize;
+        int mazeYsize;
+
         int minStep;
         int maxStep;
-        List<List<P>> mazes = new List<List<P>>();
+        public List<List<P>> mazes = new List<List<P>>();
         int margin;
         int blurSize;
 
         public Maze(Bitmap _picture, int _minStep, int _maxStep, int _margin, int _blurSize)
         {
             picture = _picture;
-            mazeSize = picture.Width; // to powinno byc 2 - wymiarowe
+            //mazeSize = picture.Width; // to powinno byc 2 - wymiarowe                 //MAZESIZE
+
+            mazeXsize = picture.Width;
+            mazeYsize = picture.Height;
+
             minStep = _minStep;
             maxStep = _maxStep;
             margin = _margin;
             blurSize = _blurSize;
         }
 
-        void createGrid()
+        private void createGrid()
         {
+            P.grid = Enumerable.Range(0, Convert.ToInt16(mazeXsize / (2 * maxStep))).Select(
+                x => Enumerable.Range(0, Convert.ToInt16(mazeYsize / (2 * maxStep))).Select(
+                    y => new List<P>()).ToList()).ToList();
+            /*
             for (int i = 0; i * 2 * maxStep < mazeSize; i++)
             {
                 P.grid.Add(new List<List<P>>());
@@ -236,10 +249,10 @@ namespace MazeCreator
                 {
                     P.grid[i].Add(new List<P>());
                 }
-            }
+            }*/
         }
 
-        void createMaze()
+        public void createMaze()
         {
 
             createGrid();
@@ -250,7 +263,7 @@ namespace MazeCreator
             List<int> indOfRndP = new List<int>();
             List<int> availableSubMazes = new List<int>();
 
-            P start = new P(mazeSize / 2, mazeSize / 2);
+            P start = new P(mazeXsize / 2, mazeYsize / 2);
             var temp = new List<P>() { start };
 
             int rand = 0;
@@ -259,7 +272,7 @@ namespace MazeCreator
 
             do
             {
-                while (P.goFucker(ref temp, mazeSize, minStep, maxStep, margin)) ;
+                while (P.goFucker(ref temp, mazeXsize, mazeYsize, minStep, maxStep, margin)) ;
 
                 indOfRndP[currsubmaze]++;
 
