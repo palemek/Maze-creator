@@ -11,3 +11,24 @@ I wasn't sure at the beginning how i want to achieve that, but finally these are
 * tunnels cannot ever cross.
 
 Without further ado: these are few examples on what i created using this program.
+
+* Based on Robert Mapplethorpe picture of Deborah Harry
+![texture without red channel, only density is afected](/Expamles/Robert-Mapplethorpe-Deborah-Harry.png)
+![Maze from it](/Expamles/bigone.png)
+
+* Based on Vincent van Gogh painting of his room
+![both channels are nearly the same](/Expamles/Vincent.jpg)
+![Maze from it](/Expamles/VincentMaze.png)
+
+* Based on Barack Obama photo
+![both channels usage](/Expamles/obama.png)
+![Maze from it](/Expamles/obamawuynik.png)
+
+- - - -
+
+When using this program:
+* it takes only Bitmap(.bmp) files - size of maze is size of texture input
+* blur size is radius around each pixel in which i find slope - bigger the value, slower program will run (5 is OK in most cases)
+* MinStepSize and MaxStepSize are minimum and maximum lengths of simplest tunnel - lower minimum value is longer it will take to compute that
+
+Thats all i have, future improvements are coming :)
