@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.IO;
 
 namespace MazeCreator
 {
@@ -70,120 +71,6 @@ namespace MazeCreator
             }
         }
 
-        //void createGrid()
-        //{
-        //    P.grid = Enumerable.Range(0, Convert.ToInt16(mazeSize / (2 * maxStep))).Select(
-        //        x => Enumerable.Range(0, Convert.ToInt16(mazeSize / (2 * maxStep))).Select(
-        //            y => new List<P>()).ToList()).ToList();
-        //    /*
-        //    for (int i = 0; i * 2 * maxStep < mazeSize; i++)
-        //    {
-        //        P.grid.Add(new List<List<P>>());
-        //        for (int j = 0; j * 2 * maxStep < mazeSize; j++)
-        //        {
-        //            P.grid[i].Add(new List<P>());
-        //        }
-        //    }*/
-        //}
-        //
-        //List<P> createMazeStart()
-        //{
-        //    List<P> starts = new List<P>();
-        //
-        //    int iterations = (int)Math.Floor(4 * Math.PI * maxStep / minStep + 1);
-        //
-        //    for (int i = 0; i < iterations;i++)
-        //    {
-        //        starts.Add(new P(mazeSize/2 + maxStep * Math.Sin(0.5f * i / Math.PI), mazeSize / 2 +  maxStep * Math.Cos(0.5f * i / Math.PI)));
-        //    }
-        //
-        //    starts.Add(new P(mazeSize / 2, mazeSize / 2 + maxStep * 2));
-        //
-        //    return starts;
-        //}
-        //
-        //void createMaze()
-        //{
-        //    if (pic == null)
-        //        return;
-        //
-        //    mazeSize = pic.Width;
-        //
-        //    createGrid();
-        //
-        //    Random rnd = new Random();
-        //
-        //    int bigPrime = 8779;
-        //    List<int> indOfRndP = new List<int>();
-        //    List<int> availableSubMazes = new List<int>();
-        //
-        //    var starts = createMazeStart();
-        //    P start = new P(mazeSize / 2, mazeSize / 2);
-        //    var temp = starts;
-        //
-        //    int rand = 0;
-        //    int currsubmaze = 0;
-        //    indOfRndP.Add(1);
-        //
-        //    do
-        //    {
-        //        while (P.goFucker(ref temp, mazeSize, minStep, maxStep, margin)) ;
-        //
-        //        indOfRndP[currsubmaze]++;
-        //        
-        //        if (temp.Count > 1)
-        //        {
-        //            mazes.Add(new List<P>(temp));
-        //            indOfRndP.Add(1);
-        //            availableSubMazes.Add(mazes.Count - 1);
-        //        }
-        //
-        //        if (indOfRndP[currsubmaze] >= mazes[currsubmaze].Count)
-        //            availableSubMazes.RemoveAt(rand);
-        //
-        //        rand = rnd.Next(Math.Max(1, availableSubMazes.Count));
-        //        if (availableSubMazes.Count == 0)
-        //            break;
-        //        currsubmaze = availableSubMazes[rand];
-        //        temp.Clear();
-        //        start = mazes[currsubmaze][(indOfRndP[currsubmaze] * bigPrime) % mazes[currsubmaze].Count];
-        //        temp.Add(start);
-        //
-        //        try
-        //        {
-        //            if (pictureLoad.InvokeRequired)
-        //            {
-        //                pictureLoad.Invoke(new MethodInvoker(delegate ()
-        //                {
-        //                    pictureLoad.Value = Convert.ToInt32(100 * P.wholeArea / (mazeSize * mazeSize));
-        //                }));
-        //            }
-        //        }
-        //
-        //        catch
-        //        {
-        //            Console.WriteLine("pictureBox1 refresh mistake");
-        //        }
-        //    } while (availableSubMazes.Count > 0);
-        //    Console.WriteLine("maze finished");
-        //    try
-        //    {
-        //        if (pictureBox1.InvokeRequired)
-        //        {
-        //            pictureBox1.Invoke(new MethodInvoker(delegate ()
-        //            {
-        //                pictureBox1.Refresh();
-        //            }));
-        //        }
-        //    }
-        //
-        //    catch
-        //    {
-        //        Console.WriteLine("pictureBox1 refresh mistake");
-        //    }
-        //    Thread.CurrentThread.Abort();
-        //}
-        //
         private void maze_Paint(object sender, PaintEventArgs e)
         {
             Brush mybrush = new SolidBrush(backgroundColor);
@@ -258,6 +145,29 @@ namespace MazeCreator
             var bmp = new Bitmap(pic.Width, pic.Height);                                           // mazes only squared
             pictureBox1.DrawToBitmap(bmp, new Rectangle(0, 0, pic.Width, pic.Height));
             bmp.Save(saveFileDialog1.FileName);
+            
+            string mydocpath =
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            using (StreamWriter outputFile = new StreamWriter(Path.Combine(mydocpath, "WriteLines.svg")))
+            {
+                outputFile.WriteLine("<svg viewBox=\"0 0 {0} {1}\"  xmlns=\"http://www.w3.org/2000/svg\">",pic.Width, pic.Height);
+                foreach (List<P> line in maze.mazes)
+                {
+                    outputFile.Write("<path fill=\"none\" stroke=\"black\" d = \"");
+                    for (int i = 0; i < line.Count; i++)
+                    {
+                        if (i == 0)
+                            outputFile.Write("M");
+                        else if (i == 1)
+                            outputFile.Write("L");
+
+                        outputFile.Write("{0},{1} ", Math.Floor(line[i].x), Math.Floor(line[i].y));
+                    }
+                    outputFile.Write("\"/>");
+                }
+                outputFile.Write("</svg>");
+            }              
         }
 
         // rzeczy stad powinny dziać się nie tu, ale w momencie startu labiryntu
