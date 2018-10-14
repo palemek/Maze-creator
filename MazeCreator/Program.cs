@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
@@ -73,7 +74,7 @@ namespace MazeCreator
 
         public static double picDensity(int _i, int _j, Bitmap _pic)
         {
-            return _pic.GetPixel(_i, _j).G/(255.0);
+            return _pic.GetPixel(_i, _j).G * _pic.GetPixel(_i, _j).G / (255.0 * 255.0);
         }
 
         private List<List<P>> checkMyGrid()
@@ -254,8 +255,10 @@ namespace MazeCreator
 
         public void createMaze()
         {
-
+            Stopwatch swc = new Stopwatch();
+            swc.Start();
             createGrid();
+            Console.WriteLine("creating grid: " + swc.ElapsedMilliseconds);
 
             Random rnd = new Random();
 
@@ -293,25 +296,27 @@ namespace MazeCreator
                 temp.Clear();
                 start = mazes[currsubmaze][(indOfRndP[currsubmaze] * bigPrime) % mazes[currsubmaze].Count];
                 temp.Add(start);
-
-                //tu dzieje sie update progressbaru
-                /*try
                 {
-                    if (pictureLoad.InvokeRequired)
+                    //tu dzieje sie update progressbaru
+                    /*try
                     {
-                        pictureLoad.Invoke(new MethodInvoker(delegate ()
+                        if (pictureLoad.InvokeRequired)
                         {
-                            pictureLoad.Value = Convert.ToInt32(100 * P.wholeArea / (mazeSize * mazeSize));
-                        }));
+                            pictureLoad.Invoke(new MethodInvoker(delegate ()
+                            {
+                                pictureLoad.Value = Convert.ToInt32(100 * P.wholeArea / (mazeSize * mazeSize));
+                            }));
+                        }
                     }
-                }
 
-                catch
-                {
-                    Console.WriteLine("pictureBox1 refresh mistake");
-                }*/
+                    catch
+                    {
+                        Console.WriteLine("pictureBox1 refresh mistake");
+                    }*/
+                }
             } while (availableSubMazes.Count > 0);
-            Console.WriteLine("maze finished");
+            
+            Console.WriteLine("maze finished: " + swc.ElapsedMilliseconds);
 
             // update obrazka na sam koniec
             /*
